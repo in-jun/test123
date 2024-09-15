@@ -1,8 +1,5 @@
-FROM golang:1.20 AS builder
-WORKDIR /app
-COPY main.go .
-RUN go build -o server .
+# Use busybox for a minimal image
+FROM busybox
 
-FROM scratch
-COPY --from=builder /app/server /server
-CMD ["/server"]
+# Create a simple HTTP server with busybox
+CMD echo -e "HTTP/1.1 200 OK\nContent-Type: text/plain\n\nHello, World!" | nc -l -p $PORT
