@@ -1,5 +1,8 @@
-# Use busybox for a minimal image
-FROM busybox
+FROM python:3.9-slim
 
-# Create a simple HTTP server with busybox
-CMD echo -e "HTTP/1.1 200 OK\nContent-Type: text/plain\n\nHello, World!" | nc -l -p 8080
+WORKDIR /app
+
+COPY hello.py .
+
+# 컨테이너 실행 시 파이썬 스크립트를 실행
+CMD ["python", "hello.py"]
