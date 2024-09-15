@@ -1,7 +1,8 @@
-FROM alpine:latest
+FROM golang:1.20 AS builder
+WORKDIR /app
+COPY main.go .
+RUN go build -o server .
 
-RUN echo '#!/bin/sh' > /print-port.sh && \
-    echo 'echo "PORT: ${PORT:-8080}"' >> /print-port.sh && \
-    chmod +x /print-port.sh
-
-CMD ["/print-port.sh"]
+FROM scratch
+COPY --from=builder /app/server /server
+CMD ["/server"]
